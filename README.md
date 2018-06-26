@@ -1,7 +1,7 @@
 # youzan-pay
 基于有赞云、微小店的个人收款收银解决方案
 
-```composer require yumufeng/youzan-pay```
+```composer require yumufeng/youzan-pay dev-master```
 
 ### 配置
 
