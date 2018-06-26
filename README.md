@@ -12,9 +12,9 @@
     'storeId'=>'' //店铺ID
  ]
 ```
-###创建付款二维码
+### 创建付款二维码
 
-（不区分支付宝、微信支付，自动识别）
+（不区分支付宝、微信支付，自动识别UA进行提示）
 
 ```php
 $options = [
@@ -31,13 +31,14 @@ $qr_content  = \Yumufeng\youzan\YouzanFatory::instance($config)->qrCode->create(
         
 ```        
 
-这个需要前端主动去后端查询
-
 ### 检查是否已经支付
+
+这个需要前端主动去后端查询，建议使用 长轮询、websocket
+
 ```php
 
 $qrId = input('qid');
-$result = \extend\youzan\YouzanFatory::instance()->tradeQr->queryByQrId($qrId);
+$result = \extend\youzan\YouzanFatory::instance($config)->tradeQr->queryByQrId($qrId);
 
 if($result === true){
     //处理自己的业务逻辑
@@ -45,22 +46,20 @@ if($result === true){
 
 ```
 
-###异步通知处理
+### 异步通知处理
 
 不建议采用这个，即使消息送达了，还是需要主动通过API去查询支付状况的
 ```php
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
-        /**
-         * 判断消息是否合法，若合法则返回成功标识
-         */
-        $config = Config::get('youzan');
         $client_id = $config['ak'];//应用的 client_id
         $client_secret = $config['sk'];//应用的 client_secret
-
         $msg = $data['msg'];
         $sign_string = $client_id . "" . $msg . "" . $client_secret;
         $sign = md5($sign_string);
+        /**
+         * 判断消息是否合法，若合法则返回成功标识
+         */
         if ($sign != $data['sign']) {
             exit();
         }
@@ -72,13 +71,10 @@ if($result === true){
          * 根据 type 来识别消息事件类型，具体的 type 值以文档为准，此处仅是示例
          */
         if ($data['type'] == "TRADE_ORDER_STATE") {
-        
-         //处理订单的消息
+         //处理付款成功、交易成功的订单的消息
          if ($data['status'] == "WAIT_SELLER_SEND_GOODS" || $data['status'] == "TRADE_SUCCESS") {
-            $data['status'] == "WAIT_SELLER_SEND_GOODS" || $data['status'] == "TRADE_SUCCESS") {
               $detail = \Yumufeng\youzan\YouzanFatory::instance($config)->tradeDetail->getQrDetailByTid($data['id']);
               $qrId = $detail['qr_id'];
-              
               //拿到qr_id 去自己的表里面查询 未付款的状态
               $payment = db('payment')->where(['trade_no' => $qrId, 'trade_status' => 0])->find();  
               
