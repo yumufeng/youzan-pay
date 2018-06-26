@@ -5,7 +5,7 @@
 
 ### 配置
 ```php
- 'youzan' => [
+ $config = [
     'ak'=>'', //appId
     'sk'=>'', // appSec
     'storeId'=>'' //店铺ID
