@@ -4,6 +4,7 @@
 ```composer require yumufeng/youzan-pay```
 
 ### 配置
+
 ```php
  $config = [
     'ak'=>'', //appId
@@ -12,6 +13,7 @@
  ]
 ```
 ###创建付款二维码
+
 （不区分支付宝、微信支付，自动识别）
 
 ```php
@@ -44,7 +46,8 @@ if($result === true){
 ```
 
 ###异步通知处理
-不建议采用这个，及时消息送达了，还是需要主动通过API去查询支付状况的
+
+不建议采用这个，即使消息送达了，还是需要主动通过API去查询支付状况的
 ```php
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
