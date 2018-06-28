@@ -51,7 +51,7 @@ class YouzanFatory
             throw new \Exception($classname . ' api undefined');
             return false;
         }
-        $new = new $classname(new YouzanFatory());
+        $new = new $classname(self::$instance);
         return $new;
 
     }

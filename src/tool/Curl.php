@@ -40,7 +40,7 @@ class Curl
         curl_setopt($ci, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ci, CURLOPT_ENCODING, "");
         curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ci, CURLOPT_SSL_VERIFYHOST, 1);
+        curl_setopt($ci, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ci, CURLOPT_HEADER, FALSE);
 
         switch ($method) {
