@@ -46,7 +46,7 @@ class YouzanFatory
     public function __get($name)
     {
         // TODO: Implement __get() method.
-        $classname = "\\Yumufeng\\youzan\\api\\" . ucfirst($name);
+        $classname = __NAMESPACE__."\\api\\" . ucfirst($name);
         if (!class_exists($classname)) {
             throw new \Exception($classname . ' api undefined');
             return false;
