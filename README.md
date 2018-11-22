@@ -70,9 +70,9 @@ if($result === true){
         /**
          * 根据 type 来识别消息事件类型，具体的 type 值以文档为准，此处仅是示例
          */
-        if ($data['type'] == "TRADE_ORDER_STATE") {
+        if ($data['type'] == "trade_TradePaid") {
          //处理付款成功、交易成功的订单的消息
-         if ($data['status'] == "WAIT_SELLER_SEND_GOODS" || $data['status'] == "TRADE_SUCCESS") {
+         if ($data['status'] == "TRADE_PAID") {
               $detail = \Yumufeng\youzan\YouzanFatory::instance($config)->tradeDetail->getQrDetailByTid($data['id']);
               $qrId = $detail['qr_id'];
               //拿到qr_id 去自己的表里面查询 未付款的状态
